@@ -22,8 +22,6 @@ public class Drive extends LinearOpMode {
         DcMotor intakeMotor = hardwareMap.get(DcMotor.class,"intakeMotor");
         Servo arm = hardwareMap.get(Servo.class,"arm");
         Servo claw = hardwareMap.get(Servo.class,"claw");
-        Gamepad currentGamepad1 = new Gamepad();
-        Gamepad previousGamepad1 = new Gamepad();
 
         frontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         frontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -46,9 +44,6 @@ public class Drive extends LinearOpMode {
             double rx = gamepad1.right_stick_x;
             double liftPower = 0.5;
             double intakeMotorPower = 0.5;
-            previousGamepad1.copy(currentGamepad1);
-            currentGamepad1.copy(gamepad1);
-
 
             double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(rx), 1);
             double frontLeftPower = (y + x - rx) / denominator;
@@ -79,14 +74,27 @@ public class Drive extends LinearOpMode {
             }
 
             if (gamepad1.x) {
-                arm.setPosition(arm.getPosition() + 0.1);
+                arm.setPosition(-1);
             }
+            //else if (gamepad1.y) {
+                // move to 180 degrees.
+                //arm.setPosition(1);
+            //}
 
+            telemetry.addData("Servo Position", arm.getPosition());
+
+            if (gamepad1.y) {
+                claw.setPosition(100);
+            } else if (gamepad1.y) {
+                claw.setPosition(0);
+            }
 
             frontLeft.setPower(frontLeftPower);
             backLeft.setPower(backLeftPower);
             frontRight.setPower(frontRightPower);
             backRight.setPower(backRightPower);
+
+            telemetry.update();
         }
     }
 }
