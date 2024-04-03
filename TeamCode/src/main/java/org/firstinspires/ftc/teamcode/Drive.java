@@ -42,8 +42,10 @@ public class Drive extends LinearOpMode {
             double y = -gamepad1.left_stick_y;
             double x = gamepad1.left_stick_x * 1.1;
             double rx = gamepad1.right_stick_x;
-            double liftPower = 0.5;
-            double intakeMotorPower = 0.5;
+            double liftPower = 0.7;
+            double intakeMotorPower = 1;
+
+            final double POSITION = 0.3;
 
             double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(rx), 1);
             double frontLeftPower = (y + x - rx) / denominator;
@@ -73,22 +75,23 @@ public class Drive extends LinearOpMode {
                 intakeMotor.setPower(0);
             }
 
-            if (gamepad1.x) {
-                arm.setPosition(-1);
-            }
+            //if (gamepad1.x) {
+              //  arm.setPosition(-POSITION);
+                //System.out.println("moving servo in negative direction, power of " + POSITION + ".");
+          //  }
             //else if (gamepad1.y) {
                 // move to 180 degrees.
                 //arm.setPosition(1);
             //}
 
-            telemetry.addData("Servo Position", arm.getPosition());
+            //telemetry.addData("Servo Position", arm.getPosition());
+            //telemetry.update();
 
             if (gamepad1.y) {
-                claw.setPosition(100);
-            } else if (gamepad1.y) {
-                claw.setPosition(0);
+                claw.setPosition(10);
+            } else if (gamepad1.x){
+                claw.setPosition(-10);
             }
-
             frontLeft.setPower(frontLeftPower);
             backLeft.setPower(backLeftPower);
             frontRight.setPower(frontRightPower);
